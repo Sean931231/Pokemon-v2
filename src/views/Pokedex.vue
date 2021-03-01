@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5> YOLO </h5>
+    <h5> this is pokedex page </h5>
   </div>
 </template>
 

@@ -9,7 +9,21 @@
           <img src="../assets/svg/pokeball.svg" >
         </div>
         <div class="navigation">
-
+          <div class="nav-btn">
+            <router-link to="/">
+              Generation
+            </router-link>
+          </div>
+          <div class="nav-btn">
+            <router-link to="/pokedex">
+              Pokedex
+            </router-link>
+          </div>
+          <div class="nav-btn">
+            <router-link to="/">
+              Town
+            </router-link>
+          </div>
         </div>
       </div>
       <div class="content">
@@ -18,13 +32,6 @@
     </div>
     <div class="circle1"></div>
     <div class="circle2"></div>
-    <!--
-      <div id="nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link>
-      </div>
-    -->
-
   </div>
 </template>
 
@@ -37,14 +44,8 @@ export default {
       data: ''
     }
   },
-  mounted () {
-    this.getInit();
-  },
-  methods: {
-    getInit() {
-      console.log("ready")
-    }
-  },
+  mounted () {},
+  methods: {},
 
 }
 </script>
