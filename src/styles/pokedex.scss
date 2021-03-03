@@ -1,0 +1,112 @@
+@import './variables';
+
+/* pc */
+@media only screen and (min-width: 1025px) {
+  .pokedex {
+    position: relative;
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+    height: 80vh;
+    padding: 15px 0px;
+    // overflow-x: hidden;
+    // overflow-y: scroll;
+    overflow: hidden;
+
+    .pokemon-list {
+      position: relative;
+      height: 100%;
+      margin: 0 auto;
+      padding: 10px 0px;
+      border-radius: 20px;
+      overflow-y: scroll;
+
+      .pokemonId {
+        position: absolute;
+        margin: 0 auto;
+        top: 10px;
+        right: 60px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .pokemonList {
+        margin: 0 auto;
+        padding: 10px;
+        border-radius: 20px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: row;
+        color: $white;
+        -webkit-box-shadow: 0px 15px 20px 0px rgba(0,0,0,0.2);
+        -moz-box-shadow: 0px 15px 20px 0px rgba(0,0,0,0.2);
+        box-shadow: 0px 15px 20px 0px rgba(0,0,0,0.2);
+        cursor: pointer;
+
+        .pokemonDetail {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          .pokemonName {
+            font-size: 18px;
+            font-weight: bold;
+
+            &::first-letter {
+              text-transform: uppercase;
+            }
+          }
+
+          .pokemonTypes {
+            position: relative;
+
+            .types {
+              font-size: 15px;
+              padding: 3px 10px;
+              border-radius: 20px;
+              margin-bottom: 5px;
+              background: rgba(204, 204, 204, 0.3);
+              backdrop-filter: blur(2rem);
+              opacity: 0.8;
+            }
+          }
+        }
+        .pokemonImage {
+          position: relative;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          align-items: center;
+
+          .ballForBack {
+            position: absolute;
+            width: 80%;
+            opacity: 0.6;
+            bottom: 0;
+            right: 0;
+            z-index: 1;
+          }
+
+          .poke {
+            width: 80%;
+            z-index: 2;
+          }
+        }
+      }
+
+      /* Hide scrollbar for IE, Edge and Firefox */
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+}
+
+/* mobile */
+@media only screen and (max-width: 768px) {}
