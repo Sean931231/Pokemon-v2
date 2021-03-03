@@ -21,6 +21,7 @@
       .gen-card {
         position: relative;
         margin: 5px 0px;
+        cursor: pointer;
         // padding: 10px;
 
         .card {
@@ -44,14 +45,13 @@
             }
           }
           img {
+            width: 80%;
+            margin: 0 auto;
             border-radius: 0px 0px 30px 30px;
           }
         }
       }
     }
-
-
-
 
     /* Hide scrollbar for IE, Edge and Firefox */
     -ms-overflow-style: none;  /* IE and Edge */

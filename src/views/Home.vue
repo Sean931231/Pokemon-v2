@@ -9,22 +9,24 @@
           <img src="../assets/svg/pokeball.svg" >
         </div>
         <div class="navigation">
-          <div class="nav-btn">
-            <router-link to="/">
-              Generation
-            </router-link>
-          </div>
-          <div class="nav-btn">
-            <router-link to="/pokedex">
-              Pokedex
-            </router-link>
-          </div>
-          <div class="nav-btn">
-            <router-link to="/">
-              Town
-            </router-link>
-          </div>
+          <router-link to="index" class="nav-btn">
+            <i class="fas fa-th"></i>
+            Generation
+          </router-link>
+          <router-link to="pokedex" class="nav-btn">
+            <i class="fas fa-digital-tachograph"></i>
+            Pokedex
+          </router-link>
+          <router-link to="town" class="nav-btn">
+            <i class="fas fa-city"></i>
+            Town
+          </router-link>
+          <router-link to="about" class="nav-btn">
+            <i class="fas fa-cogs"></i>
+            About
+          </router-link>
         </div>
+
       </div>
       <div class="content">
         <router-view/>
