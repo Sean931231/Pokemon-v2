@@ -54,11 +54,15 @@
       return {
         pokemons: [],
         newPokemonArray: [],
+
+        /* demo */
         perPage: 12,
         currentPage: 1,
         paginatedItems: [],
         totalRows: 0,
         updated: 0,
+
+        /* demo */
       }
     },
     computed: {
@@ -71,35 +75,17 @@
     },
     methods: {
       init() {
+        /* demo split */
         this.$api
             .get('https://pokeapi.co/api/v2/pokemon')
             .then( res => {
+              let pokemonResult = res.data.pokemon_species;
               this.paginatedItems = res.data.results;
               this.totalRows = this.paginatedItems.length;
 
-              this.paginatedItems.forEach( element => {
-                this.getPokemon(element.name);
-              })
-                this.paginate(this.perPage, 0);
+              this.paginate(this.perPage, 0);
             })
       },
-
-      /* getPokemon Details */
-      getPokemon(name) {
-        this.$api
-            .get(`https://pokeapi.co/api/v2/pokemon/${name}`)
-            .then( res => {
-              let response = res.data;
-              callback({
-                id: response.id,
-                name: response.name,
-                types: response.types,
-                typeColor: response.types[0],
-                img: response.sprites.other["official-artwork"].front_default
-              });
-            });
-      },
-
       /* pagination */
       paginate(page_size, page_number) {
         let itemsToParse = this.paginatedItems;
@@ -117,6 +103,21 @@
       },
       onPageChanged(page) {
         this.paginate(this.perPage, page - 1);
+      },
+
+      getPokemon(name, callback) {
+        this.$api
+            .get(`https://pokeapi.co/api/v2/pokemon/${name}`)
+            .then( res => {
+              let response = res.data;
+              callback({
+                id: response.id,
+                name: response.name,
+                types: response.types,
+                typeColor: response.types[0],
+                img: response.sprites.other["official-artwork"].front_default
+              });
+            });
       }
     },
   }
