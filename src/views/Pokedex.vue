@@ -17,32 +17,10 @@
         v-for="pokemon in newPokemonArray"
         :key="pokemon.key"
         >
-        {{updated}}
-          <div v-if="pokemon.data">
-
-          <div class="pokemonList"
-          :class="pokemon.data.typeColor.type.name">
-          <div class="pokemonDetail">
-            <p class="pokemonName">
-              {{ pokemon.data.name }}
-            </p>
-            <div class="pokemonTypes">
-              <div
-                class="types"
-                v-for="type in pokemon.data.types"
-                :key="type.key">
-                  {{ type.type.name }}
-                </div>
-            </div>
-          </div>
-          <div class="pokemonImage">
-            <img class="poke" :src="pokemon.data.img" >
-            <img class="ballForBack" src="../assets/svg/pokeball-grey.svg" >
-          </div>
+        <div class="pokemonList"> <!-- :class="pokemon.data.typeColor.type.name" -->
+          {{pokemon.name}}
+          <img :src="pokemon.img" >
         </div>
-
-          </div>
-
       </b-col>
     </b-row>
   </b-container>
@@ -54,11 +32,11 @@
       return {
         pokemons: [],
         newPokemonArray: [],
+
         perPage: 12,
         currentPage: 1,
-        paginatedItems: [],
-        totalRows: 0,
-        updated: 0,
+
+        totalRows: 0
       }
     },
     computed: {
@@ -68,57 +46,51 @@
     },
     mounted () {
       this.init();
+      // this.paginate(this.perPage, 0);
     },
     methods: {
       init() {
         this.$api
             .get('https://pokeapi.co/api/v2/pokemon')
             .then( res => {
-              this.paginatedItems = res.data.results;
-              this.totalRows = this.paginatedItems.length;
+              this.totalRows = res.data.results.length;
 
-              this.paginatedItems.forEach( element => {
-                this.getPokemon(element.name);
-              })
-                this.paginate(this.perPage, 0);
+              let pokemonResults = res.data.results;
+              pokemonResults.forEach((element,index) => {
+                this.getPokemon(element.name, index);
+              });
             })
       },
 
       /* getPokemon Details */
-      getPokemon(name) {
+      getPokemon(name, index) {
         this.$api
             .get(`https://pokeapi.co/api/v2/pokemon/${name}`)
             .then( res => {
-              let response = res.data;
-              callback({
-                id: response.id,
-                name: response.name,
-                types: response.types,
-                typeColor: response.types[0],
-                img: response.sprites.other["official-artwork"].front_default
-              });
+              let pokemonDetail = res.data;
+              // console.log("index: " + index);
+              this.pokemons.push({
+                id: pokemonDetail.id,
+                name: pokemonDetail.name,
+                img: pokemonDetail.sprites.front_default
+              })
+              this.pokemons.sort((a,b) => a.id - b.id);
+              this.paginate(this.perPage, 0);
             });
       },
 
       /* pagination */
       paginate(page_size, page_number) {
-        let itemsToParse = this.paginatedItems;
+        let itemsToParse = this.pokemons;
         this.newPokemonArray = itemsToParse.slice(
           page_number * page_size,
           (page_number + 1) * page_size
         );
-        this.newPokemonArray.forEach((e, index) => {
-          this.getPokemon(e.name, (data) => {
-            this.newPokemonArray[index].data = data;
-            this.updated++;
-          });
-        });
-
       },
       onPageChanged(page) {
         this.paginate(this.perPage, page - 1);
       }
-    },
+    }
   }
 </script>
 
