@@ -17,7 +17,7 @@
       position: relative;
       height: 100%;
       margin: 0 auto;
-      padding: 10px 0px;
+      padding: 20px 0px 40px;
       border-radius: 20px;
       overflow-y: scroll;
 
@@ -32,13 +32,13 @@
 
       .pokemonList {
         margin: 0 auto;
-        padding: 10px;
+        height: 90%;
+        padding: 15px;
         border-radius: 20px;
         margin-bottom: 20px;
         display: flex;
         flex-direction: row;
-        // color: $white;
-        color: $blue-2;
+        color: $white;
         -webkit-box-shadow: 0px 15px 20px 0px rgba(0,0,0,0.2);
         -moz-box-shadow: 0px 15px 20px 0px rgba(0,0,0,0.2);
         box-shadow: 0px 15px 20px 0px rgba(0,0,0,0.2);
@@ -65,7 +65,7 @@
 
             .types {
               font-size: 15px;
-              padding: 3px 10px;
+              padding: 3px 20px;
               border-radius: 20px;
               margin-bottom: 5px;
               background: rgba(204, 204, 204, 0.3);

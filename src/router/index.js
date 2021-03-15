@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Town from '../views/Town.vue'
 import Pokedex from '../views/Pokedex.vue'
+import Pokemon from '../views/Pokemon.vue'
 import Generation from '../views/Generation.vue'
 
 Vue.use(VueRouter)
@@ -28,6 +29,11 @@ const routes = [
         path: 'town',
         name: 'Town',
         component: Town
+      },
+      {
+        path: 'pokemon',
+        name: 'Pokemon',
+        component: Pokemon
       },
       {
         path: 'about',

@@ -6,11 +6,16 @@
       <br>
       Thanks to fans from all over the world for all resources in Google search.
     </p>
-    <div class="text">
+    <div class="poweredBy">
       Powered by:
-      <a href="https://pokeapi.co/" target="_blank">
-        <img src="../assets/logo/pokeapi.png" >
-      </a>
+      <div class="link">
+        <a href="https://vuejs.org/" target="_blank">
+          <img alt="PokeApi logo" src="../assets/logo/pokeapi.png" >
+        </a>
+        <a href="https://pokeapi.co/" target="_blank">
+          <img alt="Vue logo" src="../assets/logo.png">
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -39,5 +44,27 @@ li {
 }
 a {
   color: #42b983;
+}
+.poweredBy {
+  width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 20px;
+
+  .link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    a {
+      flex: 1;
+      width: 40%;
+
+      img {
+        width: 40%;
+      }
+    }
+  }
+
 }
 </style>

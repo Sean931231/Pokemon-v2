@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="generation" id="gen">
+  <b-container fluid class="generation">
     <b-row class="generation-content">
       <b-col
         cols="4"
@@ -25,9 +25,6 @@
     data() {
       return {
         generations: 0,
-        poke: [],
-        amount: 0,
-        name: "Sean"
       }
     },
     mounted () {
@@ -39,7 +36,6 @@
             .get ("https://pokeapi.co/api/v2/generation/")
             .then (res => {
               this.generations = res.data.results;
-              this.poke = res.data
             });
       },
 

@@ -17,9 +17,26 @@
         v-for="pokemon in newPokemonArray"
         :key="pokemon.key"
         >
-        <div class="pokemonList"> <!-- :class="pokemon.data.typeColor.type.name" -->
-          {{pokemon.name}}
-          <img :src="pokemon.img" >
+        <div class="pokemonList"
+          :class="pokemon.typeColor.type.name"
+          @click="toPokemonPage(pokemon.name)">
+          <div class="pokemonDetail">
+            <p class="pokemonName">
+              #{{pokemon.id}} {{ pokemon.name }}
+            </p>
+            <div class="pokemonTypes">
+              <div
+                class="types"
+                v-for="type in pokemon.types"
+                :key="type.key">
+                  {{ type.type.name }}
+                </div>
+            </div>
+          </div>
+          <div class="pokemonImage">
+            <img class="poke" :src="pokemon.img" >
+            <img class="ballForBack" src="../assets/svg/pokeball-grey.svg" >
+          </div>
         </div>
       </b-col>
     </b-row>
@@ -33,7 +50,7 @@
         pokemons: [],
         newPokemonArray: [],
 
-        perPage: 12,
+        perPage: 9,
         currentPage: 1,
 
         totalRows: 0
@@ -41,25 +58,41 @@
     },
     computed: {
       rows() {
-        return this.items.length
+        return this.totalRows.length
       }
     },
     mounted () {
       this.init();
-      // this.paginate(this.perPage, 0);
     },
     methods: {
       init() {
-        this.$api
-            .get('https://pokeapi.co/api/v2/pokemon')
-            .then( res => {
-              this.totalRows = res.data.results.length;
+        if (this.$route.query.id) {
+          let queryId = this.$route.query.id;
+          this.$api
+              .get('https://pokeapi.co/api/v2/generation/'+queryId)
+              .then( res => {
+                this.totalRows = res.data.pokemon_species.length;
 
-              let pokemonResults = res.data.results;
-              pokemonResults.forEach((element,index) => {
-                this.getPokemon(element.name, index);
+                let pokemonResults = res.data.pokemon_species;
+                pokemonResults.forEach((element,index) => {
+                  this.getPokemon(element.name, index);
+                });
+
               });
-            })
+
+        } else {
+          this.$api
+              .get('https://pokeapi.co/api/v2/pokemon?limit=151&offset=0')
+              .then( res => {
+                this.totalRows = res.data.results.length;
+
+                let pokemonResults = res.data.results;
+                pokemonResults.forEach((element,index) => {
+                  this.getPokemon(element.name, index);
+                });
+              })
+        }
+
       },
 
       /* getPokemon Details */
@@ -72,7 +105,9 @@
               this.pokemons.push({
                 id: pokemonDetail.id,
                 name: pokemonDetail.name,
-                img: pokemonDetail.sprites.front_default
+                img: pokemonDetail.sprites.other["official-artwork"].front_default,
+                types: pokemonDetail.types,
+                typeColor: pokemonDetail.types[0],
               })
               this.pokemons.sort((a,b) => a.id - b.id);
               this.paginate(this.perPage, 0);
@@ -89,6 +124,17 @@
       },
       onPageChanged(page) {
         this.paginate(this.perPage, page - 1);
+      },
+
+      /* redirect to pokemon page */
+      toPokemonPage(name) {
+        console.log(name);
+        this.$router.push({
+          path: 'pokemon',
+          query: {
+            name: name,
+          }
+        })
       }
     }
   }
