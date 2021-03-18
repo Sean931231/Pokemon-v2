@@ -78,8 +78,6 @@
               color: $blue-2;
               padding: 0px 10px;
             }
-
-
           }
           .router-link-exact-active {
             width: 100%;
@@ -87,7 +85,6 @@
             // // background: #e0e0e0;
             // box-shadow:  10px 10px 20px #cccccc,
             // -10px -10px 20px #ffffff;
-
             background: $blue-2;
             color: $white;
             border-radius: 10px;
@@ -101,10 +98,13 @@
 
       .content {
         flex: 4;
+        display: flex;
+        justify-content: center;
       }
     }
 
-    .circle1, .circle2 {
+    .circle1,
+    .circle2 {
       position: absolute;
       width: 280px;
       height: 280px;

@@ -9,10 +9,10 @@
     <div class="poweredBy">
       Powered by:
       <div class="link">
-        <a href="https://vuejs.org/" target="_blank">
+        <a href="https://pokeapi.co/" target="_blank">
           <img alt="PokeApi logo" src="../assets/logo/pokeapi.png" >
         </a>
-        <a href="https://pokeapi.co/" target="_blank">
+        <a href="https://vuejs.org/" target="_blank">
           <img alt="Vue logo" src="../assets/logo.png">
         </a>
       </div>

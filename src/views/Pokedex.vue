@@ -24,7 +24,7 @@
         >
         <div class="pokemonList"
           :class="pokemon.typeColor.type.name"
-          @click="toPokemonPage(pokemon.name)">
+          @click="toPokemonPage(pokemon.id, pokemon.name)">
           <div class="pokemonDetail">
             <p class="pokemonName">
               #{{pokemon.id}} {{ pokemon.name }}
@@ -53,6 +53,7 @@
     data() {
       return {
         pokemons: [],
+        pokemonList:[],
         newPokemonArray: [],
 
         perPage: 9,
@@ -67,12 +68,6 @@
       rows() {
         return this.totalRows.length
       },
-
-      newPokemonArray() {
-        return this.pokemons.filter(post => {
-          return post.title.includes(this.filter)
-        })
-      }
     },
     mounted () {
       this.init();
@@ -84,11 +79,12 @@
           this.$api
               .get('https://pokeapi.co/api/v2/generation/'+queryId)
               .then( res => {
-                this.totalRows = res.data.pokemon_species.length;
+                // this.totalRows = res.data.pokemon_species.length;
 
                 let pokemonResults = res.data.pokemon_species;
-                pokemonResults.forEach((element,index) => {
-                  this.getPokemon(element.name, index);
+                pokemonResults.forEach( element => {
+                  let splitUrl = element.url.split('/');
+                  this.grabPokemonList(splitUrl[5], splitUrl[6]);
                 });
               });
 
@@ -99,9 +95,9 @@
                 this.totalRows = res.data.results.length;
 
                 let pokemonResults = res.data.results;
-                console.log(pokemonResults);
-                pokemonResults.forEach((element,index) => {
-                  this.getPokemon(element.name, index);
+                pokemonResults.forEach(element => {
+                   let splitUrl = element.url.split('/');
+                  this.getPokemon(splitUrl[6]);
                 });
               })
         }
@@ -109,12 +105,29 @@
       },
 
       /* getPokemon Details */
-      getPokemon(name, index) {
+      grabPokemonList(method, id) {
         this.$api
-            .get(`https://pokeapi.co/api/v2/pokemon/${name}`)
+            .get(`https://pokeapi.co/api/v2/${method}/${id}`)
+            .then ( res => {
+              let passData = res.data.varieties;
+              passData.forEach( element => {
+                this.pokemonList.push({
+                  name: element.pokemon.name
+                });
+
+                let splitUrl = element.pokemon.url.split('/');
+                this.getPokemon(splitUrl[6]);
+              })
+
+              this.totalRows = this.pokemonList.length;
+            });
+      },
+
+      getPokemon(id) {
+        this.$api
+            .get(`https://pokeapi.co/api/v2/pokemon/${id}`)
             .then( res => {
               let pokemonDetail = res.data;
-              // console.log("index: " + index);
               this.pokemons.push({
                 id: pokemonDetail.id,
                 name: pokemonDetail.name,
@@ -140,11 +153,12 @@
       },
 
       /* redirect to pokemon page */
-      toPokemonPage(name) {
+      toPokemonPage(id, name) {
         this.$router.push({
           path: 'pokemon',
           query: {
-            name: name,
+            id: id,
+            name: name
           }
         })
       }

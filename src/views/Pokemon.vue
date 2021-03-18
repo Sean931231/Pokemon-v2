@@ -18,7 +18,7 @@
               <p>name: {{ pokemon.name }}</p>
               <p>weight: {{ pokemon.height }}</p>
               <p>height: {{ pokemon.weight }}</p>
-              <p>Genera: {{pokemon.genera}} </p>
+              <p>Genera: {{pokemonRace.genus}} </p>
               <p>abilities : </p>
               <div v-for="ability in pokemon.abilities" :key="ability.key">
                 - {{ability.ability.name}} -
@@ -45,18 +45,9 @@
     name: "Pokemon",
     data() {
       return {
-        pokemonName: this.$route.query.name,
+        pokemonID: this.$route.query.id,
         pokemon: {},
-
-        /* stats */
-        bars: [
-          { variant: 'success', value:10 },
-          { variant: 'info', value: 75 },
-          { variant: 'warning', value: 75 },
-          { variant: 'danger', value: 75 },
-          { variant: 'primary', value: 75 },
-          { variant: 'secondary', value: 75 },
-        ],
+        pokemonRace: {},
       }
     },
     mounted () {
@@ -64,27 +55,39 @@
     },
     methods: {
       async getPokemon() {
-        let result1 = await this.$api
-            .get("https://pokeapi.co/api/v2/pokemon/"+ this.pokemonName);
-        let result2 = await this.$api
-            .get("https://pokeapi.co/api/v2/pokemon-species/"+ this.pokemonName);
-
+        let result = await this.$api
+            .get("https://pokeapi.co/api/v2/pokemon/"+ this.pokemonID);
+        // let result2 = await this.$api
+        //     .get("https://pokeapi.co/api/v2/pokemon-species/"+ this.pokemonID);
             // console.log(result1.data);
             // console.log(result2.data);
-        let genre = result2.data.genera.find(element => element.language.name == "en");
+        //
+
+        let species = result.data.species;
+        let getSplitUrl = species.url.split('/');
+        this.getPokemonRace(getSplitUrl[6]);
 
         this.pokemon = {
-          id: result1.data.id,
-          name: result1.data.name,
-          img: result1.data.sprites.other["official-artwork"].front_default,
-          types:result1.data.types,
-          typeColor: result1.data.types[0].type.name,
-          height: result1.data.height,
-          weight: result1.data.weight,
-          genera: genre.genus,
-          abilities: result1.data.abilities,
-          stats: result1.data.stats
+          id: result.data.id,
+          name: result.data.name,
+          img: result.data.sprites.other["official-artwork"].front_default,
+          types:result.data.types,
+          typeColor: result.data.types[0].type.name,
+          height: result.data.height,
+          weight: result.data.weight,
+          abilities: result.data.abilities,
+          stats: result.data.stats
         };
+      },
+
+      getPokemonRace(id) {
+        this.$api
+            .get("https://pokeapi.co/api/v2/pokemon-species/"+ id)
+            .then( res => {
+              let result = res.data;
+              let genre = result.genera.find(element => element.language.name == "en");
+              this.pokemonRace = genre;
+            });
       }
     },
   }
