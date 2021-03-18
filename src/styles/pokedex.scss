@@ -74,7 +74,8 @@
             opacity: 0.6;
             bottom: 0;
             right: 0;
-            z-index: 1;
+            -ms-transform: rotate(20deg); /* IE 9 */
+            transform: rotate(20deg);
           }
 
           .poke {

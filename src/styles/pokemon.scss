@@ -52,6 +52,32 @@
         position: relative;
         flex: 3;
         background: $white-background;
+        text-align: left;
+        padding: 15px;
+        overflow-y: auto;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        .info {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-self: center;
+          text-align: left;
+        }
+
+        .stats {
+          flex: 1;
+
+          .progress {
+            .progress-bar {
+              background: $secondary-background;
+            }
+          }
+        }
       }
     }
   }

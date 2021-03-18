@@ -11,6 +11,7 @@
           :img-src="'./generation/generation_'+(index+1)+'.jpg'"
           :img-alt="generation.name"
           img-bottom
+          :loading="loading"
           @click="pokedex(index+1)"
         >
         </b-card>
@@ -27,6 +28,8 @@
         generations: 0,
       }
     },
+    created () {
+      },
     mounted () {
       this.getGenerationInfo();
     },

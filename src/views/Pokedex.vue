@@ -10,6 +10,11 @@
           class="my-0"
         />
       </b-col>
+
+      <b-col>
+        <b-form-input v-model="filter" placeholder="Enter your name"></b-form-input>
+      </b-col>
+
     </b-row>
     <b-row class="pokemon-list">
       <b-col
@@ -53,12 +58,20 @@
         perPage: 9,
         currentPage: 1,
 
-        totalRows: 0
+        totalRows: 0,
+
+        filter: null,
       }
     },
     computed: {
       rows() {
         return this.totalRows.length
+      },
+
+      newPokemonArray() {
+        return this.pokemons.filter(post => {
+          return post.title.includes(this.filter)
+        })
       }
     },
     mounted () {
@@ -77,7 +90,6 @@
                 pokemonResults.forEach((element,index) => {
                   this.getPokemon(element.name, index);
                 });
-
               });
 
         } else {
@@ -87,6 +99,7 @@
                 this.totalRows = res.data.results.length;
 
                 let pokemonResults = res.data.results;
+                console.log(pokemonResults);
                 pokemonResults.forEach((element,index) => {
                   this.getPokemon(element.name, index);
                 });
@@ -128,7 +141,6 @@
 
       /* redirect to pokemon page */
       toPokemonPage(name) {
-        console.log(name);
         this.$router.push({
           path: 'pokemon',
           query: {

@@ -29,7 +29,9 @@
 
       </div>
       <div class="content">
-        <router-view/>
+        <transition-page>
+          <router-view/>
+        </transition-page>
       </div>
     </div>
     <div class="circle1"></div>
@@ -38,8 +40,12 @@
 </template>
 
 <script>
+import TransitionPage from '../components/TransitionPage.vue';
 export default {
   name: 'Home',
+  components: {
+    TransitionPage,
+  },
   data() {
     return {
       title: "Pokémon",
