@@ -1,50 +1,56 @@
 <template>
   <b-container fluid class="pokedex">
-    <b-row>
-      <b-col md="6" class="my-1">
-        <b-pagination
-          @change="onPageChanged"
-          :total-rows="totalRows"
-          :per-page="perPage"
-          v-model="currentPage"
-          class="my-0"
-        />
-      </b-col>
-
-      <b-col>
-        <b-form-input v-model="filter" placeholder="Enter your name"></b-form-input>
-      </b-col>
-
-    </b-row>
-    <b-row class="pokemon-list">
+    <b-row class="seachFilter">
       <b-col
-        cols="4"
-        v-for="pokemon in newPokemonArray"
-        :key="pokemon.key"
-        >
-        <div class="pokemonList"
-          :class="pokemon.typeColor.type.name"
-          @click="toPokemonPage(pokemon.id, pokemon.name)">
-          <div class="pokemonDetail">
-            <p class="pokemonName">
-              #{{pokemon.id}} {{ pokemon.name }}
-            </p>
-            <div class="pokemonTypes">
-              <div
-                class="types"
-                v-for="type in pokemon.types"
-                :key="type.key">
-                  {{ type.type.name }}
-                </div>
+        cols="6">
+        <b-form-input v-model="filter" placeholder="Filter by name"></b-form-input>
+      </b-col>
+    </b-row>
+    <b-skeleton-wrapper :loading="loading">
+      <!-- loading -->
+      <template #loading>
+        <b-row class="load-list">
+          <b-col
+            cols="4"
+            v-for="load in loaditems"
+            :key="load.key"
+            class="my-3 list"
+            >
+            <b-skeleton-img></b-skeleton-img>
+          </b-col>
+        </b-row>
+      </template>
+      <!-- content -->
+      <b-row class="pokemon-list">
+        <b-col
+          cols="4"
+          v-for="pokemon in filteredPokemon"
+          :key="pokemon.key"
+          >
+          <div class="pokemonList"
+            :class="pokemon.typeColor.type.name"
+            @click="toPokemonPage(pokemon.id, pokemon.name)">
+            <div class="pokemonDetail">
+              <p class="pokemonName">
+                #{{pokemon.id}}<br> {{ pokemon.name }}
+              </p>
+              <div class="pokemonTypes">
+                <div
+                  class="types"
+                  v-for="type in pokemon.types"
+                  :key="type.key">
+                    {{ type.type.name }}
+                  </div>
+              </div>
+            </div>
+            <div class="pokemonImage">
+              <img class="poke" :src="pokemon.img" >
+              <img class="ballForBack" src="../assets/svg/pokeball-grey.svg" >
             </div>
           </div>
-          <div class="pokemonImage">
-            <img class="poke" :src="pokemon.img" >
-            <img class="ballForBack" src="../assets/svg/pokeball-grey.svg" >
-          </div>
-        </div>
-      </b-col>
-    </b-row>
+        </b-col>
+      </b-row>
+    </b-skeleton-wrapper>
   </b-container>
 </template>
 
@@ -54,20 +60,26 @@
       return {
         pokemons: [],
         pokemonList:[],
-        newPokemonArray: [],
 
-        perPage: 9,
-        currentPage: 1,
+        /* loading */
+        loading: false,
+        loadingTime: 0,
+        maxLoadingTime: 3,
+        loaditems: 9,
 
-        totalRows: 0,
-
-        filter: null,
+        /* search filter */
+        filter: '',
       }
     },
     computed: {
-      rows() {
-        return this.totalRows.length
-      },
+      filteredPokemon() {
+        return this.pokemons.filter( element => {
+          return element.name.includes(this.filter.toLowerCase());
+        })
+      }
+    },
+    created () {
+      this.$_loadingTimeInterval = null
     },
     mounted () {
       this.init();
@@ -102,6 +114,7 @@
               })
         }
 
+        this.startLoading()
       },
 
       /* getPokemon Details */
@@ -111,9 +124,7 @@
             .then ( res => {
               let passData = res.data.varieties;
               passData.forEach( element => {
-                this.pokemonList.push({
-                  name: element.pokemon.name
-                });
+
 
                 let splitUrl = element.pokemon.url.split('/');
                 this.getPokemon(splitUrl[6]);
@@ -128,28 +139,22 @@
             .get(`https://pokeapi.co/api/v2/pokemon/${id}`)
             .then( res => {
               let pokemonDetail = res.data;
+              let pokemonAvatar = '';
+
+              if(pokemonDetail.sprites.other["official-artwork"].front_default == null) {
+                pokemonAvatar = pokemonDetail.sprites.front_default;
+              } else {
+                pokemonAvatar = pokemonDetail.sprites.other["official-artwork"].front_default
+              }
               this.pokemons.push({
                 id: pokemonDetail.id,
                 name: pokemonDetail.name,
-                img: pokemonDetail.sprites.other["official-artwork"].front_default,
+                img: pokemonAvatar,
                 types: pokemonDetail.types,
                 typeColor: pokemonDetail.types[0],
               })
               this.pokemons.sort((a,b) => a.id - b.id);
-              this.paginate(this.perPage, 0);
             });
-      },
-
-      /* pagination */
-      paginate(page_size, page_number) {
-        let itemsToParse = this.pokemons;
-        this.newPokemonArray = itemsToParse.slice(
-          page_number * page_size,
-          (page_number + 1) * page_size
-        );
-      },
-      onPageChanged(page) {
-        this.paginate(this.perPage, page - 1);
       },
 
       /* redirect to pokemon page */
@@ -161,6 +166,36 @@
             name: name
           }
         })
+      },
+
+      /* loading */
+      clearLoadingTimeInterval() {
+        clearInterval(this.$_loadingTimeInterval)
+        this.$_loadingTimeInterval = null
+      },
+      startLoading() {
+        this.loading = true
+        this.loadingTime = 0
+      }
+    },
+    watch: {
+      loading(newValue, oldValue) {
+        if (newValue !== oldValue) {
+          this.clearLoadingTimeInterval()
+
+          if (newValue) {
+            this.$_loadingTimeInterval = setInterval(() => {
+              this.loadingTime++
+            }, 1000)
+          }
+        }
+      },
+      loadingTime(newValue, oldValue) {
+        if (newValue !== oldValue) {
+          if (newValue === this.maxLoadingTime) {
+            this.loading = false
+          }
+        }
       }
     }
   }

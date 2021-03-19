@@ -64,13 +64,20 @@
         //
 
         let species = result.data.species;
+        let pokemonAvatar = ""
         let getSplitUrl = species.url.split('/');
         this.getPokemonRace(getSplitUrl[6]);
+
+        if(result.data.sprites.other["official-artwork"].front_default == null) {
+          pokemonAvatar = result.data.sprites.front_default;
+        } else {
+          pokemonAvatar = result.data.sprites.other["official-artwork"].front_default;
+        }
 
         this.pokemon = {
           id: result.data.id,
           name: result.data.name,
-          img: result.data.sprites.other["official-artwork"].front_default,
+          img: pokemonAvatar,
           types:result.data.types,
           typeColor: result.data.types[0].type.name,
           height: result.data.height,
