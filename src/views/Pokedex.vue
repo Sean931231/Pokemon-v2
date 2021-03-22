@@ -64,7 +64,7 @@
         /* loading */
         loading: false,
         loadingTime: 0,
-        maxLoadingTime: 3,
+        maxLoadingTime: 2,
         loaditems: 9,
 
         /* search filter */
@@ -79,7 +79,9 @@
       }
     },
     created () {
-      this.$_loadingTimeInterval = null
+      this.$_loadingTimeInterval = null;
+
+      this.startLoading();
     },
     mounted () {
       this.init();
@@ -91,8 +93,6 @@
           this.$api
               .get('https://pokeapi.co/api/v2/generation/'+queryId)
               .then( res => {
-                // this.totalRows = res.data.pokemon_species.length;
-
                 let pokemonResults = res.data.pokemon_species;
                 pokemonResults.forEach( element => {
                   let splitUrl = element.url.split('/');
@@ -104,8 +104,6 @@
           this.$api
               .get('https://pokeapi.co/api/v2/pokemon?limit=151&offset=0')
               .then( res => {
-                this.totalRows = res.data.results.length;
-
                 let pokemonResults = res.data.results;
                 pokemonResults.forEach(element => {
                    let splitUrl = element.url.split('/');
@@ -113,30 +111,24 @@
                 });
               })
         }
-
-        this.startLoading()
       },
 
       /* getPokemon Details */
       grabPokemonList(method, id) {
         this.$api
-            .get(`https://pokeapi.co/api/v2/${method}/${id}`)
+            .get(`https://pokeapi.co/api/v2/${method}/${id}/`)
             .then ( res => {
               let passData = res.data.varieties;
               passData.forEach( element => {
-
-
                 let splitUrl = element.pokemon.url.split('/');
                 this.getPokemon(splitUrl[6]);
               })
-
-              this.totalRows = this.pokemonList.length;
             });
       },
 
       getPokemon(id) {
         this.$api
-            .get(`https://pokeapi.co/api/v2/pokemon/${id}`)
+            .get(`https://pokeapi.co/api/v2/pokemon/${id}/`)
             .then( res => {
               let pokemonDetail = res.data;
               let pokemonAvatar = '';
@@ -147,9 +139,9 @@
                 pokemonAvatar = pokemonDetail.sprites.other["official-artwork"].front_default
               }
               this.pokemons.push({
+                img: pokemonAvatar,
                 id: pokemonDetail.id,
                 name: pokemonDetail.name,
-                img: pokemonAvatar,
                 types: pokemonDetail.types,
                 typeColor: pokemonDetail.types[0],
               })
@@ -186,7 +178,7 @@
           if (newValue) {
             this.$_loadingTimeInterval = setInterval(() => {
               this.loadingTime++
-            }, 1000)
+            }, 2000)
           }
         }
       },
