@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Town from '../views/Town.vue'
+import Region from '../views/Region.vue'
 import Pokedex from '../views/Pokedex.vue'
 import Pokemon from '../views/Pokemon.vue'
 import Generation from '../views/Generation.vue'
@@ -21,26 +22,28 @@ const routes = [
         component: Generation
       },
       {
-        path: 'pokedex',
+        path: '/pokedex',
         name: 'Pokedex',
         component: Pokedex,
       },
       {
-        path: 'town',
+        path: '/region',
+        name: 'Region',
+        component: Region
+      },
+      {
+        path: '/town',
         name: 'Town',
         component: Town
       },
       {
-        path: 'pokemon',
+        path: '/pokemon',
         name: 'Pokemon',
         component: Pokemon
       },
       {
-        path: 'about',
+        path: '/about',
         name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
         component: function () {
           return import(/* webpackChunkName: "about" */ '../views/About.vue')
         }
@@ -52,6 +55,18 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+    if (to.hash) {
+      return {
+        selector: to.hash,
+        behavior: 'smooth',
+      };
+    }
+    return { x: 0, y: 0 };
+  },
   routes
 })
 

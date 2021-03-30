@@ -1,0 +1,54 @@
+@import './variables';
+
+/* pc */
+@media only screen and (min-width: 1025px) {
+  .region-page {
+    @include fixedContainer;
+
+    .region-list-container {
+      position: relative;
+
+      .region-list {
+        margin: 10px 0px;
+        cursor: pointer;
+
+        img {
+          border-radius: 10px;
+          width: 100%;
+        }
+      }
+    }
+
+    .region-content-container {
+      position: relative;
+
+      .region-content {
+        display: flex;
+        justify-content: flex-start;
+      }
+    }
+
+    .fade-enter-active,
+    .fade-leave-active {
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .fade-enter-from,
+    .fade-leave-to {
+      opacity: 0;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+}
+
+/* mobile */
+@media only screen and (max-width: 768px) {
+}

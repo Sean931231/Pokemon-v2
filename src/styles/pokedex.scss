@@ -14,23 +14,6 @@
       padding-bottom: 10px;
     }
 
-    .b-skeleton-wrapper {
-      position: relative;
-      margin: 0 auto;
-      width: 100%;
-      align-self: center;
-
-      .load-list {
-        margin: 0;
-
-        .list {
-          .b-skeleton-img {
-            border-radius: 20px;
-          }
-        }
-      }
-    }
-
     .pokemon-list {
       position: relative;
       height: 70vh;
@@ -39,70 +22,76 @@
       overflow: auto;
 
       .pokemonList {
-        margin: 0 auto;
-        height: 22vh;
-        padding: 15px;
-        border-radius: 20px;
-        margin-bottom: 20px;
-        display: flex;
-        flex-direction: row;
-        color: $white;
-        -webkit-box-shadow: 0px 15px 20px 0px rgba(0, 0, 0, 0.2);
-        -moz-box-shadow: 0px 15px 20px 0px rgba(0, 0, 0, 0.2);
-        box-shadow: 0px 15px 20px 0px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
+        padding-top: 5px;
+        // opacity: 0;
+        // animation: fadeIn 1s ease-in-out 3s forwards;
 
-        .pokemonDetail {
-          flex: 1;
+        .pokemonCard{
+          margin: 0 auto;
+          height: 22vh;
+          padding: 15px;
+          border-radius: 20px;
+          margin-bottom: 15px;
           display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
+          flex-direction: row;
+          color: $white;
+          -webkit-box-shadow: 0px 15px 20px 0px rgba(0, 0, 0, 0.2);
+          -moz-box-shadow: 0px 15px 20px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 15px 20px 0px rgba(0, 0, 0, 0.2);
+          cursor: pointer;
 
-          .pokemonName {
-            font-size: 18px;
-            font-weight: bold;
+          .pokemonDetail {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
 
-            &::first-letter {
-              text-transform: uppercase;
+            .pokemonName {
+              font-size: 18px;
+              font-weight: bold;
+
+              &::first-letter {
+                text-transform: uppercase;
+              }
+            }
+
+            .pokemonTypes {
+              position: relative;
+
+              .types {
+                font-size: 15px;
+                padding: 3px 20px;
+                border-radius: 20px;
+                margin-bottom: 5px;
+                background: rgba(204, 204, 204, 0.3);
+                backdrop-filter: blur(2rem);
+                opacity: 0.8;
+              }
             }
           }
-
-          .pokemonTypes {
+          .pokemonImage {
             position: relative;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
 
-            .types {
-              font-size: 15px;
-              padding: 3px 20px;
-              border-radius: 20px;
-              margin-bottom: 5px;
-              background: rgba(204, 204, 204, 0.3);
-              backdrop-filter: blur(2rem);
-              opacity: 0.8;
+            .ballForBack {
+              position: absolute;
+              width: 80%;
+              opacity: 0.6;
+              bottom: 0;
+              right: 0;
+              -ms-transform: rotate(20deg); /* IE 9 */
+              transform: rotate(20deg);
             }
-          }
-        }
-        .pokemonImage {
-          position: relative;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-          align-items: center;
 
-          .ballForBack {
-            position: absolute;
-            width: 80%;
-            opacity: 0.6;
-            bottom: 0;
-            right: 0;
-            -ms-transform: rotate(20deg); /* IE 9 */
-            transform: rotate(20deg);
-          }
-
-          .poke {
-            width: 80%;
-            z-index: 2;
+            .poke {
+              width: 80%;
+              z-index: 2;
+            }
           }
         }
       }
@@ -114,6 +103,16 @@
       &::-webkit-scrollbar {
         display: none;
       }
+    }
+  }
+
+  /* animation */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
     }
   }
 }

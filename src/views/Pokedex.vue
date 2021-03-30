@@ -6,30 +6,17 @@
         <b-form-input v-model="filter" placeholder="Filter by name"></b-form-input>
       </b-col>
     </b-row>
-    <b-skeleton-wrapper :loading="loading">
-      <!-- loading -->
-      <template #loading>
-        <b-row class="load-list">
-          <b-col
-            cols="4"
-            v-for="load in loaditems"
-            :key="load.key"
-            class="my-3 list"
-            >
-            <b-skeleton-img></b-skeleton-img>
-          </b-col>
-        </b-row>
-      </template>
-      <!-- content -->
+    <!-- content -->
       <b-row class="pokemon-list">
         <b-col
           cols="4"
           v-for="pokemon in filteredPokemon"
           :key="pokemon.key"
+          class="pokemonList"
           >
-          <div class="pokemonList"
+          <div class="pokemonCard"
             :class="pokemon.typeColor.type.name"
-            @click="toPokemonPage(pokemon.id, pokemon.name)">
+            @click="toPokemonPage(pokemon.id)">
             <div class="pokemonDetail">
               <p class="pokemonName">
                 #{{pokemon.id}}<br> {{ pokemon.name }}
@@ -50,7 +37,6 @@
           </div>
         </b-col>
       </b-row>
-    </b-skeleton-wrapper>
   </b-container>
 </template>
 
@@ -58,18 +44,15 @@
   export default {
     data() {
       return {
+        /* content */
         pokemons: [],
         pokemonList:[],
-
-        /* loading */
-        loading: false,
-        loadingTime: 0,
-        maxLoadingTime: 2,
-        loaditems: 9,
-
         /* search filter */
         filter: '',
       }
+    },
+    mounted () {
+      this.init();
     },
     computed: {
       filteredPokemon() {
@@ -77,14 +60,6 @@
           return element.name.includes(this.filter.toLowerCase());
         })
       }
-    },
-    created () {
-      this.$_loadingTimeInterval = null;
-
-      this.startLoading();
-    },
-    mounted () {
-      this.init();
     },
     methods: {
       init() {
@@ -150,46 +125,16 @@
       },
 
       /* redirect to pokemon page */
-      toPokemonPage(id, name) {
+      toPokemonPage(id) {
         this.$router.push({
           path: 'pokemon',
           query: {
             id: id,
-            name: name
           }
         })
-      },
-
-      /* loading */
-      clearLoadingTimeInterval() {
-        clearInterval(this.$_loadingTimeInterval)
-        this.$_loadingTimeInterval = null
-      },
-      startLoading() {
-        this.loading = true
-        this.loadingTime = 0
       }
     },
-    watch: {
-      loading(newValue, oldValue) {
-        if (newValue !== oldValue) {
-          this.clearLoadingTimeInterval()
-
-          if (newValue) {
-            this.$_loadingTimeInterval = setInterval(() => {
-              this.loadingTime++
-            }, 2000)
-          }
-        }
-      },
-      loadingTime(newValue, oldValue) {
-        if (newValue !== oldValue) {
-          if (newValue === this.maxLoadingTime) {
-            this.loading = false
-          }
-        }
-      }
-    }
+    watch: {},
   }
 </script>
 

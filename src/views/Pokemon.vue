@@ -9,6 +9,9 @@
           <div class="pokemonImage">
             <img :src="pokemon.img">
           </div>
+          <div class="menuNav">
+            <i class="fas fa-th"></i>
+          </div>
         </div>
         <div class="bottom">
           <div class="bottom-part-two">
