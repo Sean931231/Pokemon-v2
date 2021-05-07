@@ -1,163 +1,224 @@
 <template>
   <div class="pokemon">
-    <div class="pokemonDetails">
-        <div class="top"
-          :class="pokemon.typeColor">
-          <div class="idBackground">
-            #{{pokemon.id}}
+    <div class="pokemon-container">
+      <div class="right-card">
+        <div class="pokemon-card" :class="pokemon.typeColor">
+          <div class="netbackground"></div>
+          <div class="pokemon-info">
+            <div class="pokemon-info-upper">
+              <div class="pokemon-info-header">
+                <div class="pokemon-id">#999</div>
+                <div class="pokemon-type-icon-position">
+                  <div
+                    class="pokemon-type-icon"
+                    v-for="type in pokemon.types"
+                    :key="type.key"
+                  >
+                    <img class="info-type-icon" :src="type" alt="" />
+                  </div>
+                </div>
+              </div>
+              <img
+                class="pokemono-info-bg"
+                src="../assets/image/pokeball-bg-01.png"
+              />
+              <div class="pokemonImage">
+                <img :src="pokemon.img" />
+              </div>
+            </div>
+            <div class="pokemon-info-lower">
+              <div class="pokemon-info-content">
+                <div class="pokemon-info-content-top">
+                  <div class="pokemon-info-box">
+                    <div>- Name -</div>
+                    <div class="pokemon-info-box-name">{{ pokemon.name }}</div>
+                  </div>
+                  <div class="pokemon-info-box">
+                    <div>- Genera -</div>
+                    <div>{{ pokemonRace.genus }}</div>
+                  </div>
+                </div>
+                <div class="pokemon-info-content-bottom">
+                  <div class="pokemon-info-box">
+                    <div>- Weight -</div>
+                    <div>{{ pokemon.weight }}</div>
+                  </div>
+                  <div class="pokemon-info-box">
+                    <div>- Height -</div>
+                    <div>{{ pokemon.height }}</div>
+                  </div>
+                  <div class="pokemon-info-box">
+                    <div>- Abilities -</div>
+                    <div
+                      v-for="ability in pokemon.abilities"
+                      :key="ability.key"
+                    >
+                      <div class="pokemon-info-box-ability">
+                        {{ ability.ability.name }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="pokemonImage">
-            <img :src="pokemon.img">
-          </div>
+        </div>
+      </div>
+      <div class="left-card">
+        <div class="left-card-content">
           <div class="menuNav">
-            <i class="fas fa-th"></i>
-          </div>
-        </div>
-        <div class="bottom">
-          <div class="bottom-part-two">
-            <div class="evolution-chain">
-              <div class="chain" v-for="evolution in evoChain" :key="evolution.key">
-                <div v-if="evolution.trigger_name">
-                  <div v-if="evolution.min_level"> {{evolution.min_level}} </div>
-                  <div v-if="evolution.item">{{evolution.item.name}} </div>
-                  <div> {{evolution.trigger_name}} </div>
-                </div>
-
-                <div>
-                  <img :src="evolution.avatar">
-                  {{evolution.species_name}}
-                </div>
-              </div>
+            <div class="nav-button">
+              <i class="fas fa-caret-left"></i>
+              <i class="fas fa-th"></i>
+              <i class="fas fa-caret-right"></i>
             </div>
           </div>
-          <hr>
-          <div class="bottom-part-one">
-            <div class="info">
-              Pokemon Info:
+          <!-- STATS -->
+          <div class="stats">
+            <div class="stats-title">STATS</div>
+            <div
+              class="stats-graph"
+              v-for="stat in pokemon.stats"
+              :key="stat.key"
+            >
+              <div class="stats-graph-title">{{ stat.stat.name }}</div>
+              <b-progress class="stats-graph-bar" max="200">
+                <b-progress-bar :value="stat.base_stat"
+                  >{{ stat.base_stat }}
+                </b-progress-bar>
+              </b-progress>
+            </div>
+          </div>
+          <!-- divider -->
+          <hr class="divider" />
+          <div class="evolution-chain">
+            <div
+              class="chain"
+              v-for="evolution in evoChain"
+              :key="evolution.key"
+            >
+              <div v-if="evolution.trigger_name">
+                <div v-if="evolution.min_level">{{ evolution.min_level }}</div>
+                <div v-if="evolution.item">{{ evolution.item.name }}</div>
+                <div>{{ evolution.trigger_name }}</div>
+              </div>
+
               <div>
-                <p>name: {{ pokemon.name }}</p>
-                <p>weight: {{ pokemon.height }}</p>
-                <p>height: {{ pokemon.weight }}</p>
-                <p>Genera: {{pokemonRace.genus}} </p>
-                <p>abilities : </p>
-                <div v-for="ability in pokemon.abilities" :key="ability.key">
-                  - {{ability.ability.name}} -
-                </div>
-              </div>
-            </div>
-            <!-- stats -->
-            <div class="stats">
-              Base States:
-              <div v-for="stat in pokemon.stats" :key="stat.key">
-                {{ stat.stat.name }}
-                <b-progress max="200">
-                  <b-progress-bar :value="stat.base_stat">
-                    {{stat.base_stat}}
-                  </b-progress-bar>
-                </b-progress>
+                <img :src="evolution.avatar" />
+                {{ evolution.species_name }}
               </div>
             </div>
           </div>
-          <hr>
-
         </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    name: "Pokemon",
-    data() {
-      return {
-        pokemonID: this.$route.query.id,
-        pokemon: {},
-        pokemonRace: {},
-        value: 0,
+export default {
+  name: "Pokemon",
+  data() {
+    return {
+      pokemonID: this.$route.query.id,
+      pokemon: {},
+      pokemonRace: {},
+      pokemonTypesIcon: [],
+      value: 0,
 
-        /* evolution chain */
-        evoChain: [],
-        avatar: ""
+      /* evolution chain */
+      evoChain: [],
+      avatar: "",
+    };
+  },
+  mounted() {
+    this.getPokemon();
+  },
+  methods: {
+    async getPokemon() {
+      let result = await this.$api.get(
+        `https://pokeapi.co/api/v2/pokemon/${this.pokemonID}/`
+      );
+      // let result2 = await this.$api
+      //     .get("https://pokeapi.co/api/v2/pokemon-species/"+ this.pokemonID);
+      //
+
+      let species = result.data.species;
+      let pokemonAvatar = "";
+      let getSplitUrl = species.url.split("/");
+      this.getPokemonSpecies(getSplitUrl[6]);
+
+      if (result.data.sprites.other["official-artwork"].front_default == null) {
+        pokemonAvatar = result.data.sprites.front_default;
+      } else {
+        pokemonAvatar =
+          result.data.sprites.other["official-artwork"].front_default;
       }
+
+      let pokemonTypesArray = result.data.types;
+      pokemonTypesArray.forEach((element) => {
+        this.pokemonTypesIcon.push(
+          `../assets/typeIcon/${element.type.name}.png`
+        );
+      });
+
+      this.pokemon = {
+        id: result.data.id,
+        name: result.data.name,
+        img: pokemonAvatar,
+        types: this.pokemonTypesIcon,
+        typeColor: result.data.types[0].type.name + "-Gradient",
+        height: result.data.height,
+        weight: result.data.weight,
+        abilities: result.data.abilities,
+        stats: result.data.stats,
+      };
     },
-    mounted () {
-      this.getPokemon();
+
+    getPokemonSpecies(id) {
+      this.$api
+        .get("https://pokeapi.co/api/v2/pokemon-species/" + id)
+        .then((res) => {
+          let result = res.data;
+          let genre = result.genera.find(
+            (element) => element.language.name == "en"
+          );
+          this.pokemonRace = genre;
+          this.getEvolutinoChain(result.evolution_chain.url);
+        });
     },
-    methods: {
-      async getPokemon() {
-        let result = await this.$api
-            .get(`https://pokeapi.co/api/v2/pokemon/${this.pokemonID}/`);
-        // let result2 = await this.$api
-        //     .get("https://pokeapi.co/api/v2/pokemon-species/"+ this.pokemonID);
-        //
 
-        let species = result.data.species;
-        let pokemonAvatar = ""
-        let getSplitUrl = species.url.split('/');
-        this.getPokemonSpecies(getSplitUrl[6]);
+    /* evochain */
+    getEvolutinoChain(url) {
+      this.$api.get(url).then((results) => {
+        this.evoChain = [];
+        let evoData = results.data.chain;
+        var speciesUrl = evoData["species"]["url"];
+        var id = speciesUrl.split("/")[6];
 
-        if(result.data.sprites.other["official-artwork"].front_default == null) {
-          pokemonAvatar = result.data.sprites.front_default;
-        } else {
-          pokemonAvatar = result.data.sprites.other["official-artwork"].front_default;
-        }
+        do {
+          var evoDetails = evoData["evolution_details"][0];
+          speciesUrl = evoData["species"]["url"];
+          id = speciesUrl.split("/")[6];
 
-        this.pokemon = {
-          id: result.data.id,
-          name: result.data.name,
-          img: pokemonAvatar,
-          types:result.data.types,
-          typeColor: result.data.types[0].type.name,
-          height: result.data.height,
-          weight: result.data.weight,
-          abilities: result.data.abilities,
-          stats: result.data.stats
-        };
-      },
+          this.evoChain.push({
+            avatar: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+            species_name: evoData.species.name,
+            min_level: !evoDetails ? 1 : evoDetails.min_level,
+            trigger_name: !evoDetails ? null : evoDetails.trigger.name,
+            item: !evoDetails ? null : evoDetails.item,
+          });
 
-      getPokemonSpecies(id) {
-        this.$api
-            .get("https://pokeapi.co/api/v2/pokemon-species/"+ id)
-            .then( res => {
-              let result = res.data;
-              let genre = result.genera.find(element => element.language.name == "en");
-              this.pokemonRace = genre;
-              this.getEvolutinoChain(result.evolution_chain.url);
-            });
-      },
-
-      /* evochain */
-      getEvolutinoChain(url) {
-        this.$api
-            .get(url)
-            .then(results => {
-              this.evoChain = [];
-              let evoData = results.data.chain;
-              var speciesUrl = evoData['species']['url'];
-              var id =speciesUrl.split('/')[6];
-
-              do {
-                var evoDetails = evoData['evolution_details'][0];
-                speciesUrl = evoData['species']['url'];
-                id = speciesUrl.split('/')[6];
-
-                this.evoChain.push({
-                  "avatar":`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
-                  "species_name": evoData.species.name,
-                  "min_level": !evoDetails ? 1 : evoDetails.min_level,
-                  "trigger_name": !evoDetails ? null : evoDetails.trigger.name,
-                  "item": !evoDetails ? null : evoDetails.item,
-                });
-
-                evoData = evoData['evolves_to'][0];
-              } while (!!evoData && evoData.hasOwnProperty('evolves_to'));
-            })
-      },
+          evoData = evoData["evolves_to"][0];
+        } while (!!evoData && evoData.hasOwnProperty("evolves_to"));
+      });
     },
-  }
+  },
+};
 </script>
 
 <style lang="scss">
-  @import "../styles/pokemon.scss";
-  @import "../styles/typeColor.scss";
+@import "../styles/pokemon.scss";
+// @import "../styles/typeColor.scss";
+@import "../styles/typeGradientColor.scss";
 </style>

@@ -3,6 +3,8 @@ $primary-background     : linear-gradient(to right top, #ACB6E5, #86FDE8);
 $secondary-background   : linear-gradient(to left top, #86FDE8, #ACB6E5);
 $grey-background        : #cccccc;
 $white-background       : #ffffff;
+$white-opacity          : rgba(255, 255, 255, 0.5);
+$white-gradient         : linear-gradient(to top, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1));
 
 /* font colors */
 $black-font             : #000000;
