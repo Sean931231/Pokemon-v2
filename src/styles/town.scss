@@ -1,0 +1,34 @@
+@import './variables';
+
+/* pc */
+@media only screen and (min-width: 1025px) {
+  .town-page{
+    @include fixedContainer;
+
+    .town-page-container {
+      position: relative;
+      height: 80vh;
+      padding: 20px 20px;
+      overflow: auto;
+
+      .town-page-list {
+
+
+      }
+
+      /* Hide scrollbar for IE, Edge and Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+  }
+
+}
+
+/* mobile */
+@media only screen and (max-width: 768px) {
+}

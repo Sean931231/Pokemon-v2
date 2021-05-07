@@ -1,0 +1,311 @@
+@import './variables';
+
+/* pc */
+@media only screen and (min-width: 1025px) {
+  .pokemon {
+    @include fixedContainer;
+    padding: 15px 20px;
+
+    .pokemon-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 15px;
+      // background-color: $white-background;
+      
+      .right-card{
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 43%;
+        height: 90%;
+        border-radius: 15px;
+        background:$white-background;
+        padding: 10px;
+        overflow: hidden;
+        -webkit-box-shadow: 0px 3px 10px 0px #00000040;
+        -moz-box-shadow: 0px 3px 10px 0px #00000040;
+        box-shadow: 0px 3px 10px 0px #00000040;
+        z-index: 1;
+        
+        .pokemon-card {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          border-radius: 15px;
+          
+          .netbackground {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.3;
+            background: url(../assets/image/netBG.png);
+            background-size: 300%;
+          }
+
+          .pokemon-info {
+            position: relative;
+            margin: 0 auto;
+            height: 100%;
+            padding: 10px;
+            
+            .pokemon-info-upper {
+              width: 100%;
+              height: 45%;
+
+              .pokemon-info-header {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                
+                .pokemon-id {
+                  position: relative;
+                  color: $white;
+                  font-size: 80px;
+                  letter-spacing: 8px;
+                  flex: 9;
+                }
+
+                .pokemon-type-icon-position {
+                  flex: 1;
+                  padding-right: 15px;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+
+                  .pokemon-type-icon {
+                    margin: 5px 0px;                    
+
+                    img {
+                      width: 35px;
+                      margin: 1px 0px;
+                    }
+                  }
+                }
+              }
+              
+              .pokemono-info-bg {
+                position: absolute;
+                width: 170px;
+                margin: 0 auto;
+                left: 0;
+                right: 0;
+                top: 40px
+              }
+
+              .pokemonImage {
+                position: relative;
+                top: -20px;
+                margin: 0 auto;
+                width: 150px;
+                height: 150px;
+  
+                img {
+                  width: 100%;
+                }
+              }
+            }
+            
+            .pokemon-info-lower {
+              height: 55%;
+              border-radius: 10px;
+              padding: 30px 15px 10px;
+              background: $white-opacity;
+
+              .pokemon-info-content {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                
+                .pokemon-info-content-top{
+                  flex: 1;
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: space-between;
+                  margin: 10px 0px;
+
+                  .pokemon-info-box{
+                    flex: 1;
+                    text-align: center;
+                    padding: 10px 0px;
+                    margin: 0px 10px;
+                    background: $white-gradient;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    font-size: 15px;
+                    letter-spacing: 1.5px;
+
+                    .pokemon-info-box-name::first-letter {
+                      text-transform: capitalize;
+                    }
+
+                    div:first-child{
+                      margin-bottom: 10px;
+                    }
+                  }
+                }
+
+                .pokemon-info-content-bottom{
+                  flex: 1;
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: space-between;
+                  margin: 10px 0px;
+
+                  .pokemon-info-box{
+                    flex: 1;
+                    text-align: center;
+                    padding: 10px 0px;
+                    margin: 0px 10px;
+                    background: $white-gradient;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    font-size: 15px;
+                    letter-spacing: 1.5px;
+
+                    div:first-child{
+                      margin-bottom: 3px;
+                    }
+
+                    .pokemon-info-box-ability {
+                      margin: 0px 5px;
+                      font-size: 13px;
+                      border: 1px solid black;
+                      border-radius: 30px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      
+      .left-card{
+        position: absolute;
+        right: 0;
+        width: 60%;
+        height: 100%;
+        border-radius: 15px;
+        padding: 25px 30px 25px 70px;
+        background-color: $white-background;
+        
+        .left-card-content {
+          position: relative;
+          width: 100%;
+          height: 100%;
+
+          .menuNav {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            
+            .nav-button {
+              width: 150px;
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+
+              i {
+                background: $primary-background;
+                font-size: 20px;
+                border-radius: 50%;
+                color: $white;
+              }
+              
+              .fa-caret-left {
+                font-size: 25px;
+                padding: 8px 15px 5px 13px;
+              }
+              .fa-th {
+                padding: 10px;
+              }
+              .fa-caret-right {
+                font-size: 25px;
+                padding: 8px 13px 5px 15px;
+              }
+
+              &:hover {
+                i {cursor: pointer;}
+              }
+            }
+          }
+
+          .stats {
+            position: relative;
+            margin-top: 10px;
+
+            .stats-title {
+              width: 70px;
+              font-size: 13px;
+              color: $white;
+              background: $black;
+              margin-bottom: 15px;
+            }
+            
+            .stats-graph {
+              display: flex;
+              flex-direction: row;
+              text-align: left;
+              margin-bottom: 14px;
+
+              .stats-graph-title {
+                flex: 3;
+                text-transform: capitalize;
+                letter-spacing: 2px;
+                font-size: 14px;
+              }
+
+              .stats-graph-bar {
+                flex: 8;
+                align-self: center;
+                height: 10px;
+
+                .progress-bar {
+                  background: $secondary-background;
+                  color: $black;
+                  // transition: width 0.6s ease 0.5s;
+                }
+              }
+            }
+          }
+
+          .divider {
+            margin: 50px 0px;
+          }
+
+          /* evo chain */
+          .evolution-chain {
+            display: flex;
+            flex-direction: row;
+            margin-top: 20px;
+  
+            .chain {
+              display: flex;
+              flex-direction: row;
+              margin: 0px 10px;
+  
+              div {
+                margin: 0px 10px;
+              }
+
+              img {
+                width: 50%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -8,28 +8,17 @@
         <div class="profile-img">
           <img src="../assets/svg/pokeball.svg" >
         </div>
-        <div class="navigation">
-          <router-link to="index" class="nav-btn">
-            <i class="fas fa-th"></i>
-            Generation
-          </router-link>
-          <router-link to="pokedex" class="nav-btn">
-            <i class="fas fa-digital-tachograph"></i>
-            Pokedex
-          </router-link>
-          <router-link to="town" class="nav-btn">
-            <i class="fas fa-city"></i>
-            Town
-          </router-link>
-          <router-link to="about" class="nav-btn">
-            <i class="fas fa-cogs"></i>
-            About
+        <div class="navigation" v-for="navigation in navigations" :key="navigation.key">
+          <router-link :to="navigation.path" class="nav-btn">
+            <i :class="navigation.icon"></i>
+            {{navigation.pathname}}
           </router-link>
         </div>
-
       </div>
       <div class="content">
-        <router-view/>
+        <transition-page>
+          <router-view/>
+        </transition-page>
       </div>
     </div>
     <div class="circle1"></div>
@@ -38,12 +27,37 @@
 </template>
 
 <script>
+import TransitionPage from '../components/TransitionPage.vue';
 export default {
   name: 'Home',
+  components: {
+    TransitionPage,
+  },
   data() {
     return {
       title: "Pokémon",
-      data: ''
+      navigations: [
+        {
+          path: "index",
+          pathname: "Generation",
+          icon: "fas fa-grip-horizontal"
+        },
+        {
+          path:"pokedex",
+          pathname: "Pokedex",
+          icon: "fas fa-digital-tachograph"
+        },
+        {
+          path:"region",
+          pathname: "Region",
+          icon: "fas fa-city"
+        },
+        {
+          path:"about",
+          pathname: "About",
+          icon: "fas fa-cogs"
+        }
+      ]
     }
   },
   mounted () {},
