@@ -68,9 +68,12 @@
         <div class="right-card-content">
           <div class="menuNav">
             <div class="nav-button">
-              <i class="fas fa-caret-left"></i>
-              <i class="fas fa-th"></i>
-              <i class="fas fa-caret-right"></i>
+              <i
+                class="fas fa-caret-left"
+                @click="previousIndex(pokemon.id)"
+              ></i>
+              <i class="fas fa-th" @click="$router.go(-1)"></i>
+              <i class="fas fa-caret-right" @click="nextIndex(pokemon.id)"></i>
             </div>
           </div>
           <!-- STATS -->
@@ -162,15 +165,18 @@ export default {
       /* evolution chain */
       evoChain: [],
       avatar: "",
+
+      /* alert */
+      showDismissibleAlert: false,
     };
   },
   mounted() {
-    this.getPokemon();
+    this.getPokemon(this.pokemonID);
   },
   methods: {
-    async getPokemon() {
+    async getPokemon(id) {
       let result = await this.$api.get(
-        `https://pokeapi.co/api/v2/pokemon/${this.pokemonID}/`
+        `https://pokeapi.co/api/v2/pokemon/${id}/`
       );
       // let result2 = await this.$api
       //     .get("https://pokeapi.co/api/v2/pokemon-species/"+ this.pokemonID);
@@ -257,7 +263,50 @@ export default {
       while (s.length < size) s = "0" + s;
       return s;
     },
+
+    /* navigation */
+    previousIndex(id) {
+      let newIndex = parseInt(id);
+      if (newIndex == 1) {
+        this.$bvToast.toast(`Already the first pokemon`, {
+          title: "Pokédex",
+          autoHideDelay: 3000,
+          toaster: "b-toaster-top-center",
+          variant: "success",
+        });
+        return false;
+      }
+
+      this.$router.push({
+        name: "Pokemon",
+        query: {
+          id: newIndex - 1,
+        },
+      });
+      window.location.reload();
+    },
+
+    nextIndex(id) {
+      let newIndex = parseInt(id);
+      this.$router.push({
+        name: "Pokemon",
+        query: {
+          id: newIndex + 1,
+        },
+      });
+      window.location.reload();
+    },
   },
+
+  // watch: {
+  //   "$route.query.id": {
+  //     handler: function (value) {
+  //       console.log(value);
+  //     },
+  //     deep: true,
+  //     immediate: true,
+  //   },
+  // },
 };
 </script>
 

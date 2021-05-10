@@ -6,18 +6,22 @@
     <div class="centerBox">
       <div class="dashboard">
         <div class="profile-img">
-          <img src="../assets/svg/pokeball.svg" >
+          <img src="../assets/svg/pokeball.svg" />
         </div>
-        <div class="navigation" v-for="navigation in navigations" :key="navigation.key">
+        <div
+          class="navigation"
+          v-for="navigation in navigations"
+          :key="navigation.key"
+        >
           <router-link :to="navigation.path" class="nav-btn">
             <i :class="navigation.icon"></i>
-            {{navigation.pathname}}
+            {{ navigation.pathname }}
           </router-link>
         </div>
       </div>
       <div class="content">
         <transition-page>
-          <router-view/>
+          <router-view />
         </transition-page>
       </div>
     </div>
@@ -27,45 +31,45 @@
 </template>
 
 <script>
-import TransitionPage from '../components/TransitionPage.vue';
+import TransitionPage from "../components/TransitionPage.vue";
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     TransitionPage,
   },
   data() {
     return {
-      title: "Pokémon",
+      // title: "Pokémon",
+      title: "Pokédex",
       navigations: [
         {
           path: "index",
           pathname: "Generation",
-          icon: "fas fa-grip-horizontal"
+          icon: "fas fa-grip-horizontal",
         },
         {
-          path:"pokedex",
+          path: "pokedex",
           pathname: "Pokedex",
-          icon: "fas fa-digital-tachograph"
+          icon: "fas fa-digital-tachograph",
         },
         {
-          path:"region",
+          path: "region",
           pathname: "Region",
-          icon: "fas fa-city"
+          icon: "fas fa-city",
         },
         {
-          path:"about",
+          path: "about",
           pathname: "About",
-          icon: "fas fa-cogs"
-        }
-      ]
-    }
+          icon: "fas fa-cogs",
+        },
+      ],
+    };
   },
-  mounted () {},
+  mounted() {},
   methods: {},
-
-}
+};
 </script>
 
 <style lang="scss">
-  @import "../styles/home.scss";
+@import "../styles/home.scss";
 </style>
