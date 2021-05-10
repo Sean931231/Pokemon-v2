@@ -1,13 +1,13 @@
 <template>
   <div class="pokemon">
     <div class="pokemon-container">
-      <div class="right-card">
+      <div class="left-card">
         <div class="pokemon-card" :class="pokemon.typeColor">
           <div class="netbackground"></div>
           <div class="pokemon-info">
             <div class="pokemon-info-upper">
               <div class="pokemon-info-header">
-                <div class="pokemon-id">#999</div>
+                <div class="pokemon-id">#{{ pokemon.id }}</div>
                 <div class="pokemon-type-icon-position">
                   <div
                     class="pokemon-type-icon"
@@ -64,8 +64,8 @@
           </div>
         </div>
       </div>
-      <div class="left-card">
-        <div class="left-card-content">
+      <div class="right-card">
+        <div class="right-card-content">
           <div class="menuNav">
             <div class="nav-button">
               <i class="fas fa-caret-left"></i>
@@ -92,20 +92,53 @@
           <!-- divider -->
           <hr class="divider" />
           <div class="evolution-chain">
-            <div
-              class="chain"
-              v-for="evolution in evoChain"
-              :key="evolution.key"
-            >
-              <div v-if="evolution.trigger_name">
-                <div v-if="evolution.min_level">{{ evolution.min_level }}</div>
-                <div v-if="evolution.item">{{ evolution.item.name }}</div>
-                <div>{{ evolution.trigger_name }}</div>
-              </div>
+            <div class="evolution-chain-title">Evolution</div>
+            <div class="evolution-chain-content">
+              <div
+                class="pokemon-evolution-chain"
+                v-for="evolution in evoChain"
+                :key="evolution.key"
+              >
+                <div
+                  class="evolution-chain-trigger"
+                  v-if="evolution.trigger_name"
+                >
+                  <div class="evolution-min-level" v-if="evolution.min_level">
+                    {{ evolution.min_level }}
+                  </div>
+                  <div class="evolution-trigger-item" v-if="evolution.item">
+                    {{ evolution.item.name }}
+                  </div>
+                  <div
+                    class="evolution-trigger-happiness"
+                    v-if="evolution.min_happiness"
+                  >
+                    Happiness<br />{{ evolution.min_happiness }}
+                  </div>
+                  <div
+                    class="evolution-trigger-heldItem"
+                    v-if="evolution.held_item"
+                  >
+                    Holding<br />{{ evolution.held_item.name }}
+                  </div>
+                  <div class="evolution-knownMove" v-if="evolution.known_move">
+                    Knowing<br />"{{ evolution.known_move.name }}"
+                  </div>
+                  <i class="fas fa-angle-double-right"></i>
+                  <div>{{ evolution.trigger_name }}</div>
+                </div>
 
-              <div>
-                <img :src="evolution.avatar" />
-                {{ evolution.species_name }}
+                <div class="pokemon-chain">
+                  <div
+                    class="evolution-chain-avatar"
+                    :class="pokemon.typeColor"
+                  >
+                    <img :src="evolution.avatar" />
+                  </div>
+                  <div class="evolutoin-chain-name">
+                    {{ evolution.species_name }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -163,7 +196,8 @@ export default {
       });
 
       this.pokemon = {
-        id: result.data.id,
+        // id: result.data.id,
+        id: this.padLeadingZeros(result.data.id, 3),
         name: result.data.name,
         img: pokemonAvatar,
         types: this.pokemonTypesIcon,
@@ -205,13 +239,23 @@ export default {
             avatar: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
             species_name: evoData.species.name,
             min_level: !evoDetails ? 1 : evoDetails.min_level,
-            trigger_name: !evoDetails ? null : evoDetails.trigger.name,
             item: !evoDetails ? null : evoDetails.item,
+            held_item: !evoDetails ? null : evoDetails.held_item,
+            min_happiness: !evoDetails ? null : evoDetails.min_happiness,
+            known_move: !evoDetails ? null : evoDetails.known_move,
+            trigger_name: !evoDetails ? null : evoDetails.trigger.name,
           });
 
           evoData = evoData["evolves_to"][0];
         } while (!!evoData && evoData.hasOwnProperty("evolves_to"));
       });
+    },
+
+    /* prepending 0 */
+    padLeadingZeros(num, size) {
+      var s = num + "";
+      while (s.length < size) s = "0" + s;
+      return s;
     },
   },
 };
@@ -219,6 +263,5 @@ export default {
 
 <style lang="scss">
 @import "../styles/pokemon.scss";
-// @import "../styles/typeColor.scss";
 @import "../styles/typeGradientColor.scss";
 </style>
