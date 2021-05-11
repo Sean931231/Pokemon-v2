@@ -135,6 +135,7 @@
                   <div
                     class="evolution-chain-avatar"
                     :class="pokemon.typeColor"
+                    @click="pokemonDetail(evolution.id)"
                   >
                     <img :src="evolution.avatar" />
                   </div>
@@ -242,6 +243,7 @@ export default {
           id = speciesUrl.split("/")[6];
 
           this.evoChain.push({
+            id: id,
             avatar: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
             species_name: evoData.species.name,
             min_level: !evoDetails ? 1 : evoDetails.min_level,
@@ -296,17 +298,23 @@ export default {
       });
       window.location.reload();
     },
-  },
 
-  // watch: {
-  //   "$route.query.id": {
-  //     handler: function (value) {
-  //       console.log(value);
-  //     },
-  //     deep: true,
-  //     immediate: true,
-  //   },
-  // },
+    /* go to current pokemon */
+    pokemonDetail(id) {
+      if (id == this.$route.query.id) {
+        return false;
+      }
+
+      let newIndex = parseInt(id);
+      this.$router.push({
+        name: "Pokemon",
+        query: {
+          id: newIndex,
+        },
+      });
+      window.location.reload();
+    },
+  },
 };
 </script>
 
