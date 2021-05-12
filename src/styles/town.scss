@@ -7,19 +7,36 @@
 
     .town-page-container {
       position: relative;
-      height: 80vh;
-      padding: 20px 20px;
-      overflow: auto;
-
-      .town-page-list {
-
-
+      height: 75vh;
+      padding: 0px 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      
+      .town-page-title {
+        text-transform: capitalize;
+        font-weight: bold;
+        color: $black;
       }
+
+      .town-page-content {
+        background: $white;
+        height: 33vw;
+        border-radius: 15px;
+        justify-content: center;
+        overflow: auto;
+
+        .town-page-list {
+          width: 100%;
+          padding: 5px;
+        }
+      }
+
 
       /* Hide scrollbar for IE, Edge and Firefox */
       -ms-overflow-style: none; /* IE and Edge */
       scrollbar-width: none; /* Firefox */
-
       &::-webkit-scrollbar {
         display: none;
       }

@@ -1,13 +1,43 @@
 <template>
   <b-container fluid class="town-page">
-    <b-row class="town-page-container">
-      <b-col cols="12" class="town-page-list">
-        <div class="" v-for="(town, index) in towns" :key="index">
-          <p>{{ town.name }}</p>
-          <p>{{ town.townArea }}</p>
+    <div class="town-page-container">
+      <h1 class="town-page-title">{{ regionName }}</h1>
+      <div class="town-page-content">
+        <div class="town-page-list">
+          <b-button v-b-toggle.collapse-1 variant="primary"
+            >Toggle Collapse</b-button
+          >
+          <b-collapse id="collapse-1" class="mt-2">
+            <b-card>
+              <p class="card-text">Collapse contents Here</p>
+              <b-button v-b-toggle.collapse-1-inner size="sm"
+                >Toggle Inner Collapse</b-button
+              >
+              <b-collapse id="collapse-1-inner" class="mt-2">
+                <b-card>Hello!</b-card>
+              </b-collapse>
+            </b-card>
+          </b-collapse>
         </div>
-      </b-col>
-    </b-row>
+      </div>
+      <!-- <div class="">
+        <table border="1">
+          <tr>
+            <th>Town Name</th>
+            <th>Town Area</th>
+          </tr>
+          <tr v-for="(town, index) in towns" :key="index">
+            <td>{{ town.name }}</td>
+            <td v-if="town.areas != 'Not Ready Yet'">
+              <div v-for="townArea in town.areas" :key="townArea.key">
+                <p>{{ townArea.name }}</p>
+              </div>
+            </td>
+            <td v-else>Not Yet</td>
+          </tr>
+        </table>
+      </div> -->
+    </div>
     <!-- modal -->
     <TownModal
       v-show="showTownModal"
@@ -27,6 +57,7 @@ export default {
   data() {
     return {
       regionId: this.$route.query.id,
+      regionName: "",
       towns: [],
 
       showTownModal: false,
@@ -41,25 +72,33 @@ export default {
       this.$api
         .get(`https://pokeapi.co/api/v2/region/${this.regionId}/`)
         .then((response) => {
-          let locations = response.data.locations;
-
+          let results = response.data;
+          this.regionName = results.name;
+          let locations = results.locations;
           locations.forEach((element) => {
-            let splitUrl = element.url.split("/");
-            this.getLocations(splitUrl[6]);
+            let getSplitUrl = element.url.split("/");
+            this.getLocation(getSplitUrl[6]);
           });
         });
     },
-    getLocations(locationId) {
+
+    getLocation(id) {
       this.$api
-        .get(`https://pokeapi.co/api/v2/location/${locationId}/`)
+        .get(`https://pokeapi.co/api/v2/location/${id}/`)
         .then((response) => {
-          let result = response.data;
-          // let area = result.areas;
-          let area = result.areas == "" ? "Not Yet Ready" : result.areas;
-          let names = result.name.replace(/[^a-zA-Z0-9 ]/g, " ");
-          $is_admin = this.towns.push({
-            name: names,
-            townArea: area,
+          let locationResults = response.data;
+          let location_name = locationResults.name;
+          let location_area = [];
+
+          if (locationResults.areas != "") {
+            location_area = locationResults.areas;
+          } else {
+            location_area = "Not Ready Yet";
+          }
+
+          this.towns.push({
+            name: location_name,
+            areas: location_area,
           });
 
           /* sort according name alphabet */
@@ -76,11 +115,12 @@ export default {
           });
         });
     },
+
     /* modal */
-    openTownModal(id) {
-      this.showTownModal = true;
-      this.townId = id;
-    },
+    // openTownModal(id) {
+    //   this.showTownModal = true;
+    //   this.townId = id;
+    // },
   },
 };
 </script>
