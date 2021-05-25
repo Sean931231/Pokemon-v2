@@ -10,12 +10,15 @@ import 'animate.css';
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.prototype.$api = axios
 Vue.use(VueAxios, axios)
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(Hero)
+Vue.use(ElementUI);
 
 Vue.config.productionTip = false
 

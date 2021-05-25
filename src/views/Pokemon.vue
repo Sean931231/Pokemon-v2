@@ -22,7 +22,7 @@
                 class="pokemono-info-bg"
                 src="../assets/image/pokeball-bg-01.png"
               />
-              <div class="pokemonImage">
+              <div class="pokemonImage animate__animated animate__zoomIn">
                 <img :src="pokemon.img" />
               </div>
             </div>
@@ -31,7 +31,9 @@
                 <div class="pokemon-info-content-top">
                   <div class="pokemon-info-box">
                     <div>- Name -</div>
-                    <div class="pokemon-info-box-name">{{ pokemon.name }}</div>
+                    <div class="pokemon-info-box-name">
+                      {{ pokemon.name }}
+                    </div>
                   </div>
                   <div class="pokemon-info-box">
                     <div>- Genera -</div>
@@ -86,7 +88,9 @@
             >
               <div class="stats-graph-title">{{ stat.stat.name }}</div>
               <b-progress class="stats-graph-bar" max="200">
-                <b-progress-bar :value="stat.base_stat"
+                <b-progress-bar
+                  :value="stat.base_stat"
+                  class="animate__animated animate__slideInLeft animate__delay-1s"
                   >{{ stat.base_stat }}
                 </b-progress-bar>
               </b-progress>
