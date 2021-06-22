@@ -4,20 +4,16 @@
       <h1 class="town-page-title">{{ regionName }}</h1>
       <div class="town-page-content">
         <div class="town-page-list">
-          <b-button v-b-toggle.collapse-1 variant="primary"
-            >Toggle Collapse</b-button
-          >
-          <b-collapse id="collapse-1" class="mt-2">
-            <b-card>
-              <p class="card-text">Collapse contents Here</p>
-              <b-button v-b-toggle.collapse-1-inner size="sm"
-                >Toggle Inner Collapse</b-button
-              >
-              <b-collapse id="collapse-1-inner" class="mt-2">
-                <b-card>Hello!</b-card>
-              </b-collapse>
-            </b-card>
-          </b-collapse>
+          <el-collapse accordion>
+            <el-collapse-item
+              v-for="(town, index) in towns"
+              :key="index"
+              :name="index"
+              :title="town.name"
+            >
+              <div>demo 1</div>
+            </el-collapse-item>
+          </el-collapse>
         </div>
       </div>
       <!-- <div class="">
@@ -39,11 +35,11 @@
       </div> -->
     </div>
     <!-- modal -->
-    <TownModal
+    <!-- <TownModal
       v-show="showTownModal"
       @close="showTownModal = false"
       :townModalId="townId"
-    />
+    /> -->
   </b-container>
 </template>
 

@@ -235,16 +235,24 @@ export default {
 
     /* evochain */
     getEvolutinoChain(url) {
+      let evoChainUrlId = url.split("/")[6];
+      console.log(evoChainUrlId);
+
       this.$api.get(url).then((results) => {
         this.evoChain = [];
         let evoData = results.data.chain;
-        var speciesUrl = evoData["species"]["url"];
-        var id = speciesUrl.split("/")[6];
+        let eveData2 = results.data.chain.evolves_to;
+        // console.log(eveData2.length);
 
+        for (let index = 0; index < eveData2.length; index++) {
+          const element = eveData2[index];
+        }
+
+        eveData2.forEach((element, index) => {});
         do {
           var evoDetails = evoData["evolution_details"][0];
-          speciesUrl = evoData["species"]["url"];
-          id = speciesUrl.split("/")[6];
+          var speciesUrl = evoData["species"]["url"];
+          var id = speciesUrl.split("/")[6];
 
           this.evoChain.push({
             id: id,
@@ -259,7 +267,9 @@ export default {
           });
 
           evoData = evoData["evolves_to"][0];
-        } while (!!evoData && evoData.hasOwnProperty("evolves_to"));
+        } while (evoData && evoData.hasOwnProperty("evolves_to"));
+
+        console.log(this.evoChain.length);
       });
     },
 
@@ -274,11 +284,9 @@ export default {
     previousIndex(id) {
       let newIndex = parseInt(id);
       if (newIndex == 1) {
-        this.$bvToast.toast(`Already the first pokemon`, {
-          title: "Pokédex",
-          autoHideDelay: 3000,
-          toaster: "b-toaster-top-center",
-          variant: "success",
+        this.$message({
+          message: "Already the first pokemon",
+          type: "warning",
         });
         return false;
       }

@@ -30,6 +30,19 @@
         .town-page-list {
           width: 100%;
           padding: 5px;
+          
+          .el-collapse{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            border: transparent;
+
+              .el-collapse-item {
+                width: 30%;
+
+              }
+          }
         }
       }
 
