@@ -1,5 +1,7 @@
 # pokemon-v2
 
+## node version v11.15.0
+
 ## Project setup
 ```
 npm install
